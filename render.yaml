@@ -37,3 +37,5 @@ services:
           name: hlth01-backend
           property: host
           format: https://{}/api # e.g. https://hlth01-backend.onrender.com/api
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false # You must set this in the Render Dashboard for the Chatbot to work
