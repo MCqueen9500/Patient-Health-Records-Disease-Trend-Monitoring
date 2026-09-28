@@ -55,13 +55,13 @@ export default function LoginPage() {
     try {
       const data: any = await apiFetch('/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role: activeRole }),
       });
       const user = data?.user ?? data;
       setUser(user);
-      if (user.role === 'PATIENT') router.push('/patient/dashboard');
-      else if (user.role === 'DOCTOR') router.push('/doctor/dashboard');
-      else if (user.role === 'ADMIN') router.push('/admin/dashboard');
+      if (activeRole === 'PATIENT') router.push('/patient/dashboard');
+      else if (activeRole === 'DOCTOR') router.push('/doctor/dashboard');
+      else if (activeRole === 'ADMIN') router.push('/admin/dashboard');
     } catch (err: any) {
       setError(err.message || 'Invalid credentials. Please try again.');
     } finally {
