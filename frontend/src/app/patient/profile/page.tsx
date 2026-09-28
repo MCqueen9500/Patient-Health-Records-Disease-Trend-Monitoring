@@ -179,6 +179,24 @@ export default function PatientProfilePage() {
     }
   }
 
+  async function handleDeleteAccount() {
+    if (!window.confirm('Are you sure you want to permanently delete your account and all associated medical records? This action cannot be undone.')) {
+      return;
+    }
+    setSaving(true);
+    try {
+      await apiFetch('/auth/me', { method: 'DELETE' });
+      // Redirect to login
+      window.location.href = '/login';
+    } catch (err: unknown) {
+      setToast({
+        message: err instanceof Error ? err.message : 'Failed to delete account.',
+        type: 'error',
+      });
+      setSaving(false);
+    }
+  }
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
@@ -351,26 +369,37 @@ export default function PatientProfilePage() {
             </Card>
 
             {/* ── Actions ────────────────────────────────────────────────── */}
-            <div className="flex justify-end gap-3 pb-8">
+            <div className="flex justify-between items-center gap-3 pb-8">
               <button
                 type="button"
-                onClick={() => window.location.reload()}
-                className="btn-outline"
-              >
-                Discard Changes
-              </button>
-              <button
-                type="submit"
+                onClick={handleDeleteAccount}
                 disabled={saving}
-                className="btn-primary px-8 disabled:opacity-60"
+                className="text-sm text-red-600 font-semibold hover:text-red-700 hover:underline px-4"
               >
-                {saving ? (
-                  <>
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Saving…
-                  </>
-                ) : 'Save Changes'}
+                Delete Account
               </button>
+              
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="btn-outline"
+                >
+                  Discard Changes
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="btn-primary px-8 disabled:opacity-60"
+                >
+                  {saving ? (
+                    <>
+                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Saving…
+                    </>
+                  ) : 'Save Changes'}
+                </button>
+              </div>
             </div>
 
           </form>

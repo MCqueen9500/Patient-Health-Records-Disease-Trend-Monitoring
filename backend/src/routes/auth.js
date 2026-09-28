@@ -141,4 +141,34 @@ router.post('/logout', (_req, res) => {
   return res.status(200).json({ message: 'Logged out successfully.' });
 });
 
+// ─── DELETE /api/auth/me ──────────────────────────────────────────────────────
+router.delete('/me', protect, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+    
+    // Cascade delete associated records
+    const MedicalRecord = require('../models/MedicalRecord');
+    const AuditLog = require('../models/AuditLog');
+    
+    await MedicalRecord.deleteMany({ $or: [{ patientId: userId }, { doctorId: userId }] });
+    await AuditLog.deleteMany({ $or: [{ patientId: userId }, { doctorId: userId }] });
+
+    // Clear session cookie
+    const isProd = process.env.NODE_ENV === 'production';
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
+    });
+
+    return res.status(200).json({ message: 'Account deleted successfully.' });
+  } catch (err) {
+    console.error('[DELETE /auth/me]', err);
+    return res.status(500).json({ message: 'Server error deleting account.' });
+  }
+});
+
 module.exports = router;

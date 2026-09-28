@@ -105,6 +105,20 @@ export default function DoctorProfilePage() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Are you sure you want to permanently delete your doctor account? This will also remove any records you have created. This action cannot be undone.')) {
+      return;
+    }
+    setSaving(true);
+    try {
+      await apiFetch('/auth/me', { method: 'DELETE' });
+      window.location.href = '/login';
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to delete account.');
+      setSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -237,7 +251,15 @@ export default function DoctorProfilePage() {
           </div>
 
           {/* Submit */}
-          <div className="flex justify-end pt-3 pb-3">
+          <div className="flex justify-between items-center pt-3 pb-3">
+            <button
+              type="button"
+              onClick={handleDeleteAccount}
+              disabled={saving}
+              className="text-sm text-red-600 font-semibold hover:text-red-700 hover:underline px-4"
+            >
+              Delete Account
+            </button>
             <button
               type="submit"
               disabled={saving}
