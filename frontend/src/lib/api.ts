@@ -33,12 +33,24 @@ export async function apiFetch<T = unknown>(
     ...(customHeaders as Record<string, string>),
   };
 
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...rest,
-    headers,
-    body,
-    credentials: 'include',
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE}${path}`, {
+      ...rest,
+      headers,
+      body,
+      credentials: 'include',
+    });
+  } catch (error) {
+    // Basic 1-time retry on network failure
+    console.warn(`[Network] Retrying ${path}...`);
+    response = await fetch(`${API_BASE}${path}`, {
+      ...rest,
+      headers,
+      body,
+      credentials: 'include',
+    });
+  }
 
   if (!response.ok) {
     let message = `HTTP ${response.status}`;
