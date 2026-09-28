@@ -180,4 +180,17 @@ PORT=5000
 ```
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
 NEXT_PUBLIC_JWT_SECRET=your_super_secret_jwt_key_change_in_production
+GOOGLE_GENERATIVE_AI_API_KEY=AQ... # For Gemini Chatbot
 ```
+
+---
+
+## Deployment (Render)
+
+This project is fully configured for automated deployment via Render Blueprints.
+
+1. Create a MongoDB Atlas cluster and get your `MONGO_URI`.
+2. Connect this repository to your Render Dashboard using the **Blueprint** option.
+3. Render will automatically read `render.yaml` and provision both the Node.js backend and Next.js frontend.
+4. Input your `MONGO_URI` and `GOOGLE_GENERATIVE_AI_API_KEY` when prompted by Render.
+5. (Optional) Run the seed script on your remote database locally to populate the demo data.
