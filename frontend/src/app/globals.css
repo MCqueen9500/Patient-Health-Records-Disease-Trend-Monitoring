@@ -1,0 +1,207 @@
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Brand tokens ─────────────────────────────────────────────────── */
+:root {
+  --background: #f0fdf4;
+  --surface:    #ffffff;
+  --primary:    #16a34a;
+  --primary-lt: #dcfce7;
+  --secondary:  #15803d;
+  --accent:     #f59e0b;
+  --text:       #14532d;
+  --text-muted: #4b7c5e;
+  --border:     #bbf7d0;
+}
+
+/* ── Base reset ───────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #f0fdf4;
+    color: #14532d;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.25;
+    color: #14532d;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  a:hover { color: #15803d; }
+
+  input, textarea, select {
+    font-family: inherit;
+  }
+}
+
+/* ── Reusable component classes ──────────────────────────────────── */
+@layer components {
+
+  /* Page wrapper */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+  }
+
+  /* Clean white card with green shadow */
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-green-100 p-6;
+  }
+
+  /* Section heading */
+  .section-title {
+    @apply text-2xl font-bold text-primary mb-6 flex items-center gap-2;
+  }
+
+  /* Stats card */
+  .stat-card {
+    @apply bg-white rounded-2xl shadow-card border border-green-100 p-5 flex flex-col gap-2
+           hover:shadow-card-hover transition-shadow duration-200;
+  }
+
+  /* Primary green button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl
+           bg-primary text-white font-semibold px-5 py-2.5 text-sm
+           hover:bg-primary-700 active:scale-95 transition-all duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Ghost green outline button */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl
+           border-2 border-primary text-primary font-semibold px-5 py-2.5 text-sm
+           hover:bg-primary-50 active:scale-95 transition-all duration-150;
+  }
+
+  /* Form label */
+  .label {
+    @apply block text-sm font-semibold text-green-800 mb-1;
+  }
+
+  /* Input field */
+  .input-field {
+    @apply w-full rounded-xl border border-green-200 bg-white px-4 py-2.5 text-sm
+           text-green-900 placeholder-green-400
+           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+           transition-all duration-150;
+  }
+
+  /* Badge pills */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .badge-green   { @apply bg-green-100 text-green-800; }
+  .badge-red     { @apply bg-red-100 text-red-700; }
+  .badge-amber   { @apply bg-amber-100 text-amber-700; }
+  .badge-blue    { @apply bg-blue-100 text-blue-700; }
+  .badge-purple  { @apply bg-purple-100 text-purple-700; }
+  .badge-teal    { @apply bg-teal-100 text-teal-700; }
+
+  /* Alert / banner strips */
+  .alert-info    { @apply bg-green-50 border border-green-200 text-green-800 rounded-xl px-4 py-3 text-sm; }
+  .alert-error   { @apply bg-red-50  border border-red-200  text-red-700  rounded-xl px-4 py-3 text-sm; }
+  .alert-success { @apply bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl px-4 py-3 text-sm; }
+
+  /* Table */
+  .table-header { @apply bg-green-50 text-green-800 text-xs uppercase font-bold tracking-wider; }
+  .table-row    { @apply border-b border-green-50 hover:bg-green-50/40 transition-colors; }
+}
+
+/* ── Utility extras ─────────────────────────────────────────────── */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-green-400 bg-clip-text text-transparent;
+  }
+
+  .glass-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(187,247,208,0.6);
+  }
+
+  .ring-green { @apply ring-2 ring-primary ring-offset-2; }
+}
+
+/* ── Leaflet ──────────────────────────────────────────────────────── */
+.leaflet-container {
+  position: relative;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+  background: #dcfce7;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.leaflet-container img {
+  max-width: none;
+}
+
+.leaflet-control-zoom,
+.leaflet-control-attribution {
+  z-index: 10;
+}
+
+.leaflet-control-zoom a {
+  color: #14532d;
+  background: #ffffff;
+  border-color: #bbf7d0;
+}
+
+.leaflet-control-zoom a:hover {
+  color: #15803d;
+  background: #f0fdf4;
+}
+
+.leaflet-control-attribution {
+  color: #4b7c5e;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.leaflet-control-attribution a,
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  color: #14532d;
+}
+
+.leaflet-tooltip {
+  border: 1px solid #bbf7d0;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 12px rgba(22, 163, 74, 0.12);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────── */
+::-webkit-scrollbar               { width: 5px; height: 5px; }
+::-webkit-scrollbar-track         { background: #f0fdf4; }
+::-webkit-scrollbar-thumb         { background: #86efac; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover   { background: #4ade80; }
+
+/* ── Animations ──────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.animate-fade-in { animation: fadeIn 0.25s ease-out both; }
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(22,163,74,0);  }
+}
+.pulse-green { animation: pulse-green 2s infinite; }
