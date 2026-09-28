@@ -193,13 +193,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Demo credentials hint */}
-        <div className="mt-4 bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-xs text-green-700">
-          <p className="font-semibold mb-1">Demo credentials</p>
-          <p>Admin: <span className="font-mono">admin@hlth01.gov</span> / <span className="font-mono">Admin@1234</span></p>
-          <p>Doctor: <span className="font-mono">arun.mehta@hospital.com</span> / <span className="font-mono">Doctor@1234</span></p>
-          <p>Patient: <span className="font-mono">rahul.verma@email.com</span> / <span className="font-mono">Patient@1234</span></p>
-        </div>
+
       </div>
     </div>
   );

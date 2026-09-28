@@ -1,0 +1,39 @@
+services:
+  # ─── Backend Service ───
+  - type: web
+    name: hlth01-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # You must set this in the Render Dashboard (use MongoDB Atlas)
+      - key: JWT_SECRET
+        generateValue: true # Render will automatically generate a secure secret
+
+  # ─── Frontend Service (Next.js) ───
+  - type: web
+    name: hlth01-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_JWT_SECRET
+        fromService:
+          type: web
+          name: hlth01-backend
+          envVarKey: JWT_SECRET
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: hlth01-backend
+          property: host
+          format: https://{}/api # e.g. https://hlth01-backend.onrender.com/api
